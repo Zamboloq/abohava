@@ -31,8 +31,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.blur
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -43,6 +46,7 @@ import coil.decode.SvgDecoder
 import coil.request.ImageRequest
 import yampi.msh.abohava.domain.model.ForecastDayModel
 import yampi.msh.abohava.domain.model.ForecastTemperatureModel
+import yampi.msh.abohava.util.getConditionBackground
 import yampi.msh.abohava.util.getConditionIcon
 import yampi.msh.abohava.util.setBackgroundCardColor
 import yampi.msh.abohava.util.setBackgroundColor
@@ -53,6 +57,9 @@ import java.time.format.TextStyle
 @Composable
 fun dayViewLayout(state: MutableState<ForecastTemperatureModel>) {
     var temperatureState: ForecastTemperatureModel by remember { state }
+    val width = remember { mutableStateOf(0f) }
+    val height = remember { mutableStateOf(0f) }
+    val density = LocalDensity.current.density
 
     val forecastDay = temperatureState.forecastModel?.forecastday?.let {
         val forecastDay = if (it.isNullOrEmpty()) {
@@ -68,6 +75,14 @@ fun dayViewLayout(state: MutableState<ForecastTemperatureModel>) {
             .fillMaxSize()
             .background(setBackgroundColor(isDay))
     ) {
+        AsyncImage(
+            modifier = Modifier
+                .fillMaxSize()
+                .blur(radius = 15.dp),
+            model = getConditionBackground(temperatureState.currentModel?.conditionModel?.code ?: 0, isDay),
+            contentScale = ContentScale.Crop,
+            contentDescription = ""
+        )
         Column(
             modifier = Modifier
                 .fillMaxWidth()
