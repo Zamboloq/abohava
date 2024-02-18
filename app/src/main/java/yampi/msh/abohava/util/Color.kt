@@ -6,11 +6,20 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 
+val primary = Color(0, 191, 238)
+val primaryVariant = Color(16, 78, 139)
+val secondary = Color(79, 79, 79)
+val secondaryVariant = Color(179, 179, 179)
+val background = Color(79, 79, 79, 100)
+val surface = Color(179, 179, 179, 200)
+val Blue500 = Color(0xff026586)
+val Blue800 = Color(0xff032C45)
+
 fun setBackgroundColor(isDay: Boolean): Brush {
     return if (isDay) {
-        Brush.verticalGradient(listOf(Color(0, 191, 238), Color(16, 78, 139)))
+        Brush.verticalGradient(listOf(primary, primaryVariant))
     } else {
-        Brush.verticalGradient(listOf(Color(79, 79, 79), Color(179, 179, 179)))
+        Brush.verticalGradient(listOf(secondary, secondaryVariant))
     }
 
 }

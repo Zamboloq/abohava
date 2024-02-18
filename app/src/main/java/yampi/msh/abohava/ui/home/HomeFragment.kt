@@ -17,7 +17,6 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import yampi.msh.abohava.databinding.FragmentHomeBinding
 import yampi.msh.abohava.domain.model.ForecastTemperatureModel
-import yampi.msh.abohava.ui.dayViewLayout
 import yampi.msh.abohava.ui.home.TemperatureViewState.Error
 import yampi.msh.abohava.ui.home.TemperatureViewState.Success
 import yampi.msh.abohava.ui.home.viewmodel.HomeViewModel
@@ -51,7 +50,7 @@ class HomeFragment : Fragment() {
         val composeView: ComposeView = binding.composeView
         composeView.apply {
             setContent {
-                dayViewLayout(temperatureState)
+                DayCollapsibleToolbarViewLayout(state = temperatureState)
             }
         }
 
