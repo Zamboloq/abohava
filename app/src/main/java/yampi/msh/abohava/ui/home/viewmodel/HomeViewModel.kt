@@ -32,7 +32,7 @@ class HomeViewModel @Inject constructor(
         MutableStateFlow<TemperatureViewState>(TemperatureViewState.Success(ForecastTemperatureModel()))
     val uiState: StateFlow<TemperatureViewState> = _uiState
 
-    var city: String = "Gorgan"
+    var city: String = DEFAULT_CITY
 
 
 //    fun getSelectedCity() {
@@ -57,20 +57,6 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    //54.62427286373671, 25.30575850078279
-    fun _getForecastTemperature(city: String) {
-        viewModelScope.launch(Dispatchers.IO) {
-            getForecastTemperatureUseCase.execute(
-                forecastParam = ForecastParam(
-                    location = Location(name = city /*lat = 54.62427286373671, lon = 25.30575850078279*/),
-                    days = 10
-                )
-            )
-                .catch { exception -> _uiState.value = TemperatureViewState.Error(exception.message.orEmpty()) }
-                .collect { forecastTemperature -> _uiState.value = TemperatureViewState.Success(forecastTemperature) }
-        }
-    }
-
     fun getForecastTemperature() {
         viewModelScope.launch(Dispatchers.IO) {
             coroutineScope {
@@ -79,5 +65,22 @@ class HomeViewModel @Inject constructor(
             }
 
         }
+    }
+
+    private fun _getForecastTemperature(city: String?) {
+        viewModelScope.launch(Dispatchers.IO) {
+            getForecastTemperatureUseCase.execute(
+                forecastParam = ForecastParam(
+                    location = Location(name = city?: DEFAULT_CITY /*lat = 54.62427286373671, lon = 25.30575850078279*/),
+                    days = 10
+                )
+            )
+                .catch { exception -> _uiState.value = TemperatureViewState.Error(exception.message.orEmpty()) }
+                .collect { forecastTemperature -> _uiState.value = TemperatureViewState.Success(forecastTemperature) }
+        }
+    }
+
+    companion object {
+        private const val DEFAULT_CITY = "Gorgan"
     }
 }

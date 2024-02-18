@@ -15,6 +15,15 @@ fun setBackgroundColor(isDay: Boolean): Brush {
 
 }
 
+fun setBackgroundColorWithAlpha(): Brush {
+    return Brush.verticalGradient(
+        listOf(
+            Color(79, 79, 79, 100),
+            Color(179, 179, 179, 200)
+        )
+    )
+}
+
 @Composable
 fun setBackgroundCardColor(isDay: Boolean): CardColors {
     return if (isDay) {

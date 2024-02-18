@@ -50,6 +50,7 @@ import yampi.msh.abohava.util.getConditionBackground
 import yampi.msh.abohava.util.getConditionIcon
 import yampi.msh.abohava.util.setBackgroundCardColor
 import yampi.msh.abohava.util.setBackgroundColor
+import yampi.msh.abohava.util.setBackgroundColorWithAlpha
 import yampi.msh.abohava.util.setBackgroundDividerColor
 import java.time.LocalDate
 import java.time.format.TextStyle
@@ -78,11 +79,18 @@ fun dayViewLayout(state: MutableState<ForecastTemperatureModel>) {
         AsyncImage(
             modifier = Modifier
                 .fillMaxSize()
-                .blur(radius = 15.dp),
+                .blur(radius = 10.dp),
             model = getConditionBackground(temperatureState.currentModel?.conditionModel?.code ?: 0, isDay),
             contentScale = ContentScale.Crop,
             contentDescription = ""
         )
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(setBackgroundColorWithAlpha())
+        ) {
+
+        }
         Column(
             modifier = Modifier
                 .fillMaxWidth()

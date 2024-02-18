@@ -32,11 +32,9 @@ class HomeFragment : Fragment() {
     // onDestroyView.
     val binding get() = _binding!!
 
-//    val city = "vilnius"
 
     private val homeViewModel: HomeViewModel by lazy {
         val viewModel: HomeViewModel by viewModels()
-//        viewModel.city = city
         viewModel
     }
 
@@ -45,8 +43,6 @@ class HomeFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-//        val homeViewModel =
-//            ViewModelProvider(this).get(HomeViewModel::class.java)
 
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
@@ -83,6 +79,8 @@ class HomeFragment : Fragment() {
                                 "Forecast for seven days: >>>\n${uiState.forecastTemperatureModel}"
                             )
                             temperatureState.value = uiState.forecastTemperatureModel
+                            activity?.title =
+                                uiState.forecastTemperatureModel.locationModel?.name.orEmpty()
                         }
 
                         is Error -> Log.d("HomeFragment", "Error: ${uiState.errorMessage}")
