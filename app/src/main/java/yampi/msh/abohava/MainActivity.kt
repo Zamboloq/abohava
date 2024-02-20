@@ -45,7 +45,6 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.ui.AppBarConfiguration
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -63,7 +62,6 @@ import java.time.LocalDate
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
 
     private val homeViewModel: HomeViewModel by lazy {
@@ -77,7 +75,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
-    @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -137,7 +134,6 @@ class MainActivity : AppCompatActivity() {
                 modifier = Modifier
                     .fillMaxWidth()
                     .wrapContentHeight(),
-//                color = colorScheme.background
             ) {
                 Scaffold(bottomBar = { TabView(tabBarItems, navController) }) {
                     NavHost(navController = navController, startDestination = homeTab.title) {
@@ -237,8 +233,6 @@ class MainActivity : AppCompatActivity() {
     }
 }
 
-// This component helps to clean up the API call from our TabView above,
-// but could just as easily be added inside the TabView without creating this custom component
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TabBarIconView(
@@ -260,8 +254,6 @@ fun TabBarIconView(
     }
 }
 
-// This component helps to clean up the API call from our TabBarIconView above,
-// but could just as easily be added inside the TabBarIconView without creating this custom component
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
 fun TabBarBadgeView(count: Int? = null) {
@@ -271,19 +263,15 @@ fun TabBarBadgeView(count: Int? = null) {
         }
     }
 }
-// end of the reusable components that can be copied over to any new projects
-// ----------------------------------------
-
-// This was added to demonstrate that we are infact changing views when we click a new tab
 @Composable
 fun MoreView() {
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
-        Text("Thing 1")
-        Text("Thing 2")
-        Text("Thing 3")
-        Text("Thing 4")
-        Text("Thing 5")
+        Text("TODO: NOT IMPLEMENTED YET")
+        Text("TODO: NOT IMPLEMENTED YET")
+        Text("TODO: NOT IMPLEMENTED YET")
+        Text("TODO: NOT IMPLEMENTED YET")
+        Text("TODO: NOT IMPLEMENTED YET")
     }
 }

@@ -123,8 +123,6 @@ fun AddCityView(onSendCity: (city: String) -> Unit) {
 fun CityItem(city: String, onItemClick: (String) -> Unit) {
     Box(modifier = Modifier
         .fillMaxWidth()
-//        .background(setBackgroundColor(true))
-//        .clip(RoundedCornerShape(8.dp))
         .clickable {
             onItemClick(city)
         }) {

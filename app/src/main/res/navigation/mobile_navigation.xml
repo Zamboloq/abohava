@@ -11,12 +11,6 @@
         tools:layout="@layout/fragment_home" />
 
     <fragment
-        android:id="@+id/nav_cities"
-        android:name="yampi.msh.abohava.ui.cities.CitiesFragment"
-        android:label="@string/menu_cities"
-        tools:layout="@layout/fragment_cities" />
-
-    <fragment
         android:id="@+id/nav_about"
         android:name="yampi.msh.abohava.ui.slideshow.SlideshowFragment"
         android:label="@string/menu_about"
