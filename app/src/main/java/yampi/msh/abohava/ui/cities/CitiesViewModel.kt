@@ -5,7 +5,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -45,8 +44,7 @@ class CitiesViewModel @Inject constructor(
     fun addCityAndRefresh(city: String) {
         viewModelScope.launch(Dispatchers.IO) {
             coroutineScope {
-                val result = async { addCityUseCase.execute(city = city) }
-                refreshAfterResult(result.await())
+                refreshAfterResult(addCityUseCase.execute(city = city))
             }
 
         }

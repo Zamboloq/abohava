@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -34,13 +33,6 @@ class HomeViewModel @Inject constructor(
 
     var city: String = DEFAULT_CITY
 
-
-//    fun getSelectedCity() {
-//        viewModelScope.launch(Dispatchers.IO) {
-//            getSelectedCityUseCase.execute().collect { selectedCity -> city = selectedCity }
-//        }
-//    }
-
     fun getCurrentTemperature(city: String) {
         viewModelScope.launch {
             getCurrentTemperatureUseCase.execute(
@@ -50,7 +42,9 @@ class HomeViewModel @Inject constructor(
                 )
             )
                 .flowOn(Dispatchers.IO)
-                .catch { exception -> _uiState.value = TemperatureViewState.Error(exception.message.orEmpty()) }
+                .catch { exception ->
+                    _uiState.value = TemperatureViewState.Error(exception.message.orEmpty())
+                }
                 .collect { currentTemperature ->
                     _uiState.value = TemperatureViewState.Success(currentTemperature.toForecast())
                 }
@@ -60,8 +54,7 @@ class HomeViewModel @Inject constructor(
     fun getForecastTemperature() {
         viewModelScope.launch(Dispatchers.IO) {
             coroutineScope {
-                val selectedCity = async { getSelectedCityUseCase.execute() }
-                _getForecastTemperature(city = selectedCity.await())
+                _getForecastTemperature(city = getSelectedCityUseCase.execute())
             }
 
         }
@@ -71,12 +64,19 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             getForecastTemperatureUseCase.execute(
                 forecastParam = ForecastParam(
-                    location = Location(name = city?: DEFAULT_CITY /*lat = 54.62427286373671, lon = 25.30575850078279*/),
+                    location = Location(
+                        name = city
+                            ?: DEFAULT_CITY /*lat = 54.62427286373671, lon = 25.30575850078279*/
+                    ),
                     days = 10
                 )
             )
-                .catch { exception -> _uiState.value = TemperatureViewState.Error(exception.message.orEmpty()) }
-                .collect { forecastTemperature -> _uiState.value = TemperatureViewState.Success(forecastTemperature) }
+                .catch { exception ->
+                    _uiState.value = TemperatureViewState.Error(exception.message.orEmpty())
+                }
+                .collect { forecastTemperature ->
+                    _uiState.value = TemperatureViewState.Success(forecastTemperature)
+                }
         }
     }
 

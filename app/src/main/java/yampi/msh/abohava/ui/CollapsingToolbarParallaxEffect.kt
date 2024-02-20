@@ -48,7 +48,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.lerp
-import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import coil.decode.SvgDecoder
 import coil.request.ImageRequest
@@ -58,22 +57,17 @@ import yampi.msh.abohava.util.Blue500
 import yampi.msh.abohava.util.Blue800
 import yampi.msh.abohava.util.getConditionBackground
 import yampi.msh.abohava.util.getConditionIcon
+import yampi.msh.abohava.util.largeFontSize
+import yampi.msh.abohava.util.mediumSize
+import yampi.msh.abohava.util.xLargeSize
+import yampi.msh.abohava.util.xMediumSize
+import yampi.msh.abohava.util.xxMediumFontSize
+import yampi.msh.abohava.util.xxxLargeFontSize
+import yampi.msh.abohava.util.xxxLargeSize
 
 private const val animationDurationMillis = 300
 private const val titleFontScaleStart = 1f
 private const val titleFontScaleEnd = 0.66f
-
-private val xSmallSize = 4.dp
-private val smallSize = 8.dp
-private val mediumSize = 16.dp
-private val xMediumSize = 24.dp
-private val largeSize = 32.dp
-private val xLargeSize = 40.dp
-
-private val mediumFontSize = 18.sp
-private val largeFontSize = 32.sp
-private val xLargeFontSize = 48.sp
-private val xxLargeFontSize = 96.sp
 
 private val weatherIconSize = 100.dp
 
@@ -136,14 +130,14 @@ fun CollapsingToolbarParallaxEffect(
                             text = "${temperatureState.currentModel?.tempC}",
                             textAlign = TextAlign.Center,
                             fontWeight = FontWeight.W300,
-                            fontSize = xxLargeFontSize,
+                            fontSize = xxxLargeFontSize,
                             color = Color.White
                         )
                         Spacer(modifier = Modifier.size(width = 0.dp, height = xLargeSize))
                         Text(
                             text = "${temperatureState.currentModel?.conditionModel?.text}",
                             textAlign = TextAlign.Center,
-                            fontSize = mediumFontSize,
+                            fontSize = xxMediumFontSize,
                             fontWeight = FontWeight.Light,
                             color = Color.White
                         )
@@ -151,7 +145,7 @@ fun CollapsingToolbarParallaxEffect(
                             Text(
                                 text = "H: ${forecastDay?.day?.maxtempC}",
                                 textAlign = TextAlign.Center,
-                                fontSize = mediumFontSize,
+                                fontSize = xxMediumFontSize,
                                 fontWeight = FontWeight.Light,
                                 color = Color.White
                             )
@@ -159,7 +153,7 @@ fun CollapsingToolbarParallaxEffect(
                             Text(
                                 text = "L: ${forecastDay?.day?.mintempC}",
                                 textAlign = TextAlign.Center,
-                                fontSize = mediumFontSize,
+                                fontSize = xxMediumFontSize,
                                 fontWeight = FontWeight.Light,
                                 color = Color.White
                             )
@@ -286,7 +280,7 @@ private fun Body(
             forecastDay = forecastDay,
             isDay = isDay
         )
-        Spacer(modifier = Modifier.size(width = 0.dp, height = xMediumSize))
+        Spacer(modifier = Modifier.size(width = 0.dp, height = xxxLargeSize))
     }
 }
 

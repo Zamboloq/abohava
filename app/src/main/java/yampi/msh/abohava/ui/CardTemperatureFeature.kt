@@ -21,13 +21,17 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import coil.decode.SvgDecoder
 import coil.request.ImageRequest
 import yampi.msh.abohava.domain.model.HourModel
 import yampi.msh.abohava.util.getConditionIcon
+import yampi.msh.abohava.util.largeSize
+import yampi.msh.abohava.util.mediumFontSize
+import yampi.msh.abohava.util.mediumSize
 import yampi.msh.abohava.util.setBackgroundCardColor
+import yampi.msh.abohava.util.xxMediumFontSize
+import yampi.msh.abohava.util.xxxLargeSize
 
 @Composable
 fun ForecastDayListView(
@@ -47,7 +51,7 @@ fun ForecastDayListView(
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Box(
                     modifier = Modifier
-                        .size(32.dp, 32.dp), Alignment.Center
+                        .size(largeSize, largeSize), Alignment.Center
                 ) {
                     AsyncImage(
                         model = ImageRequest.Builder(LocalContext.current)
@@ -60,7 +64,7 @@ fun ForecastDayListView(
                 Text(
                     text = title,
                     textAlign = TextAlign.Start,
-                    fontSize = 14.sp,
+                    fontSize = mediumFontSize,
                     fontWeight = FontWeight.Light,
                     color = Color.White
                 )
@@ -116,13 +120,13 @@ fun CardTemperatureFeatureView(
     ) {
         Column(
             modifier = Modifier
-                .padding(16.dp)
-                .height(90.dp),
+                .padding(mediumSize)
+                .height(xxxLargeSize),
         ) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Box(
                     modifier = Modifier
-                        .size(32.dp, 32.dp), Alignment.Center
+                        .size(largeSize, largeSize), Alignment.Center
                 ) {
                     AsyncImage(
                         model = ImageRequest.Builder(LocalContext.current)
@@ -135,7 +139,7 @@ fun CardTemperatureFeatureView(
                 Text(
                     text = title,
                     textAlign = TextAlign.Start,
-                    fontSize = 14.sp,
+                    fontSize = mediumFontSize,
                     fontWeight = FontWeight.Light,
                     color = Color.White
                 )
@@ -143,14 +147,14 @@ fun CardTemperatureFeatureView(
             Text(
                 text = "$value $symbol",
                 textAlign = TextAlign.Start,
-                fontSize = 18.sp,
+                fontSize = xxMediumFontSize,
                 fontWeight = FontWeight.Bold,
                 color = Color.White
             )
             Text(
                 text = message,
                 textAlign = TextAlign.Start,
-                fontSize = 14.sp,
+                fontSize = mediumFontSize,
                 fontWeight = FontWeight.Bold,
                 color = Color.White
             )
