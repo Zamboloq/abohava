@@ -1,10 +1,6 @@
-package yampi.msh.abohava.ui.cities
+package yampi.msh.abohava.ui
 
-import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -22,6 +18,7 @@ import androidx.compose.material3.Divider
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -30,101 +27,22 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
-import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
-import yampi.msh.abohava.databinding.FragmentCitiesBinding
-
-@AndroidEntryPoint
-class CitiesFragment : Fragment() {
-
-    private var _binding: FragmentCitiesBinding? = null
-
-    // This property is only valid between onCreateView and
-    // onDestroyView.
-    private val binding get() = _binding!!
-
-    private val cities = mutableListOf<String>()
-    private var selectedCity = "Gorgan"
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        val citiesViewModel =
-            ViewModelProvider(this).get(CitiesViewModel::class.java)
-
-        _binding = FragmentCitiesBinding.inflate(inflater, container, false)
-        val root: View = binding.root
-
-        val citiesView: ComposeView = binding.citiesView
-
-
-        viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                citiesViewModel.uiViewState.collect { uiState ->
-                    when (uiState) {
-                        is CitiesViewState.City -> {
-                            selectedCity = uiState.name.orEmpty()
-                            Log.d("CitiesFragment", "Selected city: ${uiState.name}")
-                        }
-
-                        is CitiesViewState.Cities -> {
-                            Log.d("CitiesFragment", "Cities: ${uiState.cities}")
-                            if (uiState.cities.isEmpty()) {
-                                cities.clear()
-                            } else {
-                                cities.clear()
-                                cities.addAll(uiState.cities)
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        citiesViewModel.getCities()
-        citiesViewModel.getSelectedCity()
-
-        citiesView.apply {
-            setContent {
-                CitiesView(
-                    cities = cities,
-                    selectedCity = selectedCity,
-                    onSelectCity = { city -> citiesViewModel.selectCity(city = city) },
-                    addCity = { city -> citiesViewModel.addCityAndRefresh(city = city) })
-            }
-        }
-
-
-        return root
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
-}
+import androidx.lifecycle.viewmodel.compose.viewModel
+import yampi.msh.abohava.ui.cities.CitiesViewModel
+import yampi.msh.abohava.ui.cities.CitiesViewState
 
 @Composable
 fun CitiesView(
-    cities: MutableList<String>,
+    citiesViewModel: CitiesViewModel = viewModel(),
     selectedCity: String,
     addCity: (city: String) -> Unit,
     onSelectCity: (city: String) -> Unit,
 ) {
-    var citiesState by remember {
-        mutableStateOf(cities)
-    }
+    val citiesUiState by citiesViewModel.uiViewState.collectAsState()
+
     var visible by remember {
         mutableStateOf(true)
     }
@@ -142,14 +60,22 @@ fun CitiesView(
             .fillMaxSize()
             .graphicsLayer { alpha = animatedAlpha }
             .padding(16.dp)) {
-            LazyColumn {
-                items(citiesState) { city ->
-                    CityItem(city = city, onItemClick = { selectedCity ->
-                        Log.d("CitiesFragment", "$selectedCity is clicked.")
-                        onSelectCity(selectedCity)
-                        selectedCityName = selectedCity
-                    })
-                    Divider(color = Color.Black)
+            when (citiesUiState) {
+                is CitiesViewState.City -> {
+                    SelectedCityView(city = (citiesUiState as CitiesViewState.City).name.orEmpty())
+                }
+
+                is CitiesViewState.Cities -> {
+                    LazyColumn {
+                        items((citiesUiState as CitiesViewState.Cities).cities) { city ->
+                            CityItem(city = city, onItemClick = { selectedCity ->
+                                Log.d("CitiesFragment", "$selectedCity is clicked.")
+                                citiesViewModel.selectCity(city = city)
+                                selectedCityName = selectedCity
+                            })
+                            Divider(color = Color.Black)
+                        }
+                    }
                 }
             }
         }
@@ -197,8 +123,6 @@ fun AddCityView(onSendCity: (city: String) -> Unit) {
 fun CityItem(city: String, onItemClick: (String) -> Unit) {
     Box(modifier = Modifier
         .fillMaxWidth()
-//        .background(setBackgroundColor(true))
-//        .clip(RoundedCornerShape(8.dp))
         .clickable {
             onItemClick(city)
         }) {

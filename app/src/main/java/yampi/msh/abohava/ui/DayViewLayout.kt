@@ -48,10 +48,19 @@ import yampi.msh.abohava.domain.model.ForecastDayModel
 import yampi.msh.abohava.domain.model.ForecastTemperatureModel
 import yampi.msh.abohava.util.getConditionBackground
 import yampi.msh.abohava.util.getConditionIcon
+import yampi.msh.abohava.util.largeSize
+import yampi.msh.abohava.util.mediumFontSize
+import yampi.msh.abohava.util.mediumSize
 import yampi.msh.abohava.util.setBackgroundCardColor
 import yampi.msh.abohava.util.setBackgroundColor
 import yampi.msh.abohava.util.setBackgroundColorWithAlpha
 import yampi.msh.abohava.util.setBackgroundDividerColor
+import yampi.msh.abohava.util.smallSize
+import yampi.msh.abohava.util.xLargeSize
+import yampi.msh.abohava.util.xMediumSize
+import yampi.msh.abohava.util.xSmallFontSize
+import yampi.msh.abohava.util.xSmallSize
+import yampi.msh.abohava.util.xxMediumSize
 import java.time.LocalDate
 import java.time.format.TextStyle
 
@@ -80,7 +89,10 @@ fun dayViewLayout(state: MutableState<ForecastTemperatureModel>) {
             modifier = Modifier
                 .fillMaxSize()
                 .blur(radius = 10.dp),
-            model = getConditionBackground(temperatureState.currentModel?.conditionModel?.code ?: 0, isDay),
+            model = getConditionBackground(
+                temperatureState.currentModel?.conditionModel?.code ?: 0,
+                isDay
+            ),
             contentScale = ContentScale.Crop,
             contentDescription = ""
         )
@@ -97,17 +109,21 @@ fun dayViewLayout(state: MutableState<ForecastTemperatureModel>) {
                 .verticalScroll(rememberScrollState())
         ) {
 
-            Spacer(modifier = Modifier.size(width = 0.dp, height = 24.dp))
+            Spacer(modifier = Modifier.size(width = 0.dp, height = xMediumSize))
 
-            MainTemperatureView(temperatureState = temperatureState, forecastDay = forecastDay, isDay = isDay)
+            MainTemperatureView(
+                temperatureState = temperatureState,
+                forecastDay = forecastDay,
+                isDay = isDay
+            )
 
-            Spacer(modifier = Modifier.size(width = 0.dp, height = 24.dp))
+            Spacer(modifier = Modifier.size(width = 0.dp, height = xMediumSize))
 
             ForecastDayListView(
                 modifier = Modifier
                     .fillMaxWidth()
                     .wrapContentHeight()
-                    .padding(16.dp),
+                    .padding(mediumSize),
                 title = "HOURLY FORECAST",
                 hours = forecastDay?.hour,
                 isDay = isDay,
@@ -121,22 +137,31 @@ fun dayViewLayout(state: MutableState<ForecastTemperatureModel>) {
                 iconUrl = "https://www.svgrepo.com/show/423032/calendar-weather-cloud.svg"
             )
 
-            Spacer(modifier = Modifier.size(width = 0.dp, height = 16.dp))
+            Spacer(modifier = Modifier.size(width = 0.dp, height = mediumSize))
 
-            DayTemperatureDetails(temperatureState = temperatureState, forecastDay = forecastDay, isDay = isDay)
+            DayTemperatureDetails(
+                temperatureState = temperatureState,
+                forecastDay = forecastDay,
+                isDay = isDay
+            )
 
-            Spacer(modifier = Modifier.size(width = 0.dp, height = 24.dp))
+            Spacer(modifier = Modifier.size(width = 0.dp, height = xMediumSize))
         }
     }
 }
 
 @Composable
-fun ForecastDaysView(title: String, forecasts: ArrayList<ForecastDayModel>?, isDay: Boolean, iconUrl: String = "") {
+fun ForecastDaysView(
+    title: String,
+    forecasts: ArrayList<ForecastDayModel>?,
+    isDay: Boolean,
+    iconUrl: String = ""
+) {
     OutlinedCard(
         modifier = Modifier
             .fillMaxWidth()
             .height(300.dp)
-            .padding(16.dp),
+            .padding(mediumSize),
         elevation = CardDefaults.outlinedCardElevation(),
         border = CardDefaults.outlinedCardBorder(),
         colors = setBackgroundCardColor(isDay),
@@ -144,11 +169,11 @@ fun ForecastDaysView(title: String, forecasts: ArrayList<ForecastDayModel>?, isD
         if (forecasts.isNullOrEmpty()) {
             //TODO SHOW A MESSAGE ABOUT WE HAVE NO ANY FORECAST INFORMATION FOR NEXT WEEK
         } else {
-            Column(modifier = Modifier.padding(8.dp)) {
+            Column(modifier = Modifier.padding(smallSize)) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Box(
                         modifier = Modifier
-                            .size(32.dp, 32.dp), Alignment.Center
+                            .size(largeSize, largeSize), Alignment.Center
                     ) {
                         AsyncImage(
                             model = ImageRequest.Builder(LocalContext.current)
@@ -161,12 +186,12 @@ fun ForecastDaysView(title: String, forecasts: ArrayList<ForecastDayModel>?, isD
                     Text(
                         text = title,
                         textAlign = TextAlign.Start,
-                        fontSize = 14.sp,
+                        fontSize = mediumFontSize,
                         fontWeight = FontWeight.Light,
                         color = Color.White
                     )
                 }
-                Spacer(modifier = Modifier.size(0.dp, 4.dp))
+                Spacer(modifier = Modifier.size(0.dp, xSmallSize))
                 LazyColumn {
                     items(forecasts) { forecast ->
                         val day = forecast.day
@@ -179,7 +204,7 @@ fun ForecastDaysView(title: String, forecasts: ArrayList<ForecastDayModel>?, isD
                             TODO("VERSION.SDK_INT < O")
                         }
                         Divider(
-                            modifier = Modifier.padding(top = 8.dp, bottom = 8.dp),
+                            modifier = Modifier.padding(top = smallSize, bottom = smallSize),
                             color = setBackgroundDividerColor(isDay = isDay)
                         )
                         Box(modifier = Modifier
@@ -189,30 +214,35 @@ fun ForecastDaysView(title: String, forecasts: ArrayList<ForecastDayModel>?, isD
                                 Row(
                                     modifier = Modifier
                                         .fillMaxWidth()
-                                        .padding(start = 8.dp),
+                                        .padding(start = smallSize),
                                     verticalAlignment = Alignment.CenterVertically
                                 ) {
                                     Text(
                                         text = "$dayName",
-                                        fontSize = 14.sp,
+                                        fontSize = mediumFontSize,
                                         fontWeight = FontWeight.Bold,
-                                        modifier = Modifier.width(28.dp)
+                                        modifier = Modifier.width(xxMediumSize)
                                     )
-//                                    Spacer(modifier = Modifier.size(16.dp, 0.dp))
+//                                    Spacer(modifier = Modifier.size(mediumSize, 0.dp))
                                     Box(
                                         modifier = Modifier
-                                            .size(40.dp, 40.dp)
+                                            .size(xLargeSize, xLargeSize)
                                             .weight(1f), Alignment.Center
                                     ) {
                                         AsyncImage(
                                             model = ImageRequest.Builder(LocalContext.current)
-                                                .data(getConditionIcon(day?.condition?.code ?: 0, true))
+                                                .data(
+                                                    getConditionIcon(
+                                                        day?.condition?.code ?: 0,
+                                                        true
+                                                    )
+                                                )
                                                 .decoderFactory(SvgDecoder.Factory())
                                                 .build(),
                                             contentDescription = "Translated description of what the image contains"
                                         )
                                     }
-//                                    Spacer(modifier = Modifier.size(16.dp, 0.dp))
+//                                    Spacer(modifier = Modifier.size(mediumSize, 0.dp))
                                     Row(
                                         modifier = Modifier
                                             .wrapContentSize()
@@ -220,7 +250,7 @@ fun ForecastDaysView(title: String, forecasts: ArrayList<ForecastDayModel>?, isD
                                     ) {
                                         Box(
                                             modifier = Modifier
-                                                .size(20.dp, 20.dp), Alignment.Center
+                                                .size(xMediumSize, xMediumSize), Alignment.Center
                                         ) {
                                             AsyncImage(
                                                 model = ImageRequest.Builder(LocalContext.current)
@@ -232,13 +262,13 @@ fun ForecastDaysView(title: String, forecasts: ArrayList<ForecastDayModel>?, isD
                                         }
                                         Text(
                                             text = "${day?.maxtempC}",
-                                            fontSize = 14.sp,
+                                            fontSize = mediumFontSize,
                                             fontWeight = FontWeight.Bold,
-                                            modifier = Modifier.width(32.dp)
+                                            modifier = Modifier.width(largeSize)
                                         )
                                         Box(
                                             modifier = Modifier
-                                                .size(20.dp, 20.dp), Alignment.Center
+                                                .size(xMediumSize, xMediumSize), Alignment.Center
                                         ) {
                                             AsyncImage(
                                                 model = ImageRequest.Builder(LocalContext.current)
@@ -250,12 +280,12 @@ fun ForecastDaysView(title: String, forecasts: ArrayList<ForecastDayModel>?, isD
                                         }
                                         Text(
                                             text = "${day?.mintempC}",
-                                            fontSize = 14.sp,
+                                            fontSize = mediumFontSize,
                                             fontWeight = FontWeight.Bold,
-                                            modifier = Modifier.width(32.dp)
+                                            modifier = Modifier.width(largeSize)
                                         )
                                     }
-//                                    Spacer(modifier = Modifier.size(16.dp, 0.dp))
+//                                    Spacer(modifier = Modifier.size(mediumSize, 0.dp))
                                     Row(
                                         modifier = Modifier
                                             .wrapContentSize()
@@ -264,7 +294,7 @@ fun ForecastDaysView(title: String, forecasts: ArrayList<ForecastDayModel>?, isD
                                         Column {
                                             Box(
                                                 modifier = Modifier
-                                                    .size(20.dp, 20.dp), Alignment.Center
+                                                    .size(xMediumSize, xMediumSize), Alignment.Center
                                             ) {
                                                 AsyncImage(
                                                     model = ImageRequest.Builder(LocalContext.current)
@@ -274,13 +304,16 @@ fun ForecastDaysView(title: String, forecasts: ArrayList<ForecastDayModel>?, isD
                                                     contentDescription = "Translated description of what the image contains"
                                                 )
                                             }
-                                            Text(text = "${day?.dailyChanceOfRain}%", fontSize = 12.sp)
+                                            Text(
+                                                text = "${day?.dailyChanceOfRain}%",
+                                                fontSize = xSmallFontSize
+                                            )
                                         }
-                                        Spacer(modifier = Modifier.size(16.dp, 0.dp))
+                                        Spacer(modifier = Modifier.size(mediumSize, 0.dp))
                                         Column {
                                             Box(
                                                 modifier = Modifier
-                                                    .size(20.dp, 20.dp), Alignment.Center
+                                                    .size(xMediumSize, xMediumSize), Alignment.Center
                                             ) {
                                                 AsyncImage(
                                                     model = ImageRequest.Builder(LocalContext.current)
@@ -290,7 +323,10 @@ fun ForecastDaysView(title: String, forecasts: ArrayList<ForecastDayModel>?, isD
                                                     contentDescription = "Translated description of what the image contains"
                                                 )
                                             }
-                                            Text(text = "${day?.dailyChanceOfSnow}%", fontSize = 12.sp)
+                                            Text(
+                                                text = "${day?.dailyChanceOfSnow}%",
+                                                fontSize = xSmallFontSize
+                                            )
                                         }
                                     }
                                 }
@@ -304,7 +340,11 @@ fun ForecastDaysView(title: String, forecasts: ArrayList<ForecastDayModel>?, isD
 }
 
 @Composable
-fun MainTemperatureView(temperatureState: ForecastTemperatureModel, forecastDay: ForecastDayModel?, isDay: Boolean) {
+fun MainTemperatureView(
+    temperatureState: ForecastTemperatureModel,
+    forecastDay: ForecastDayModel?,
+    isDay: Boolean
+) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -312,7 +352,12 @@ fun MainTemperatureView(temperatureState: ForecastTemperatureModel, forecastDay:
     ) {
         AsyncImage(
             model = ImageRequest.Builder(LocalContext.current)
-                .data(getConditionIcon(temperatureState.currentModel?.conditionModel?.code ?: 0, isDay))
+                .data(
+                    getConditionIcon(
+                        temperatureState.currentModel?.conditionModel?.code ?: 0,
+                        isDay
+                    )
+                )
                 .decoderFactory(SvgDecoder.Factory())
                 .build(),
             contentDescription = "Translated description of what the image contains"
@@ -321,7 +366,7 @@ fun MainTemperatureView(temperatureState: ForecastTemperatureModel, forecastDay:
     Box(modifier = Modifier.wrapContentSize()) {
         Column(
             modifier = Modifier
-                .padding(4.dp)
+                .padding(xSmallSize)
                 .fillMaxWidth(fraction = 1f),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
@@ -341,7 +386,7 @@ fun MainTemperatureView(temperatureState: ForecastTemperatureModel, forecastDay:
                 )
 //                        Box(
 //                            modifier = Modifier
-//                                .size(48.dp, 48.dp), Alignment.TopStart
+//                                .size(4smallSize, 4smallSize), Alignment.TopStart
 //                        ) {
 //                            AsyncImage(
 //                                model = ImageRequest.Builder(LocalContext.current)
@@ -367,7 +412,7 @@ fun MainTemperatureView(temperatureState: ForecastTemperatureModel, forecastDay:
                     fontWeight = FontWeight.Light,
                     color = Color.White
                 )
-                Spacer(modifier = Modifier.size(16.dp, 0.dp))
+                Spacer(modifier = Modifier.size(mediumSize, 0.dp))
                 Text(
                     text = "L: ${forecastDay?.day?.mintempC}",
                     textAlign = TextAlign.Center,
@@ -381,9 +426,13 @@ fun MainTemperatureView(temperatureState: ForecastTemperatureModel, forecastDay:
 }
 
 @Composable
-fun DayTemperatureDetails(temperatureState: ForecastTemperatureModel, forecastDay: ForecastDayModel?, isDay: Boolean) {
+fun DayTemperatureDetails(
+    temperatureState: ForecastTemperatureModel,
+    forecastDay: ForecastDayModel?,
+    isDay: Boolean
+) {
     Row(verticalAlignment = Alignment.CenterVertically) {
-        Spacer(modifier = Modifier.size(width = 16.dp, height = 0.dp))
+        Spacer(modifier = Modifier.size(width = mediumSize, height = 0.dp))
         CardTemperatureFeatureView(
             modifier = Modifier.weight(1f),
             title = "UV INDEX",
@@ -393,7 +442,7 @@ fun DayTemperatureDetails(temperatureState: ForecastTemperatureModel, forecastDa
             url = "https://bmcdn.nl/assets/weather-icons/v3.0/fill/svg/uv-index.svg",
             isDay = isDay
         )
-        Spacer(modifier = Modifier.size(width = 16.dp, height = 0.dp))
+        Spacer(modifier = Modifier.size(width = mediumSize, height = 0.dp))
         CardTemperatureFeatureView(
             modifier = Modifier.weight(1f),
             title = "SUNRISE",
@@ -403,13 +452,13 @@ fun DayTemperatureDetails(temperatureState: ForecastTemperatureModel, forecastDa
             url = "https://bmcdn.nl/assets/weather-icons/v3.0/fill/svg/time-morning.svg",
             isDay = isDay
         )
-        Spacer(modifier = Modifier.size(width = 16.dp, height = 0.dp))
+        Spacer(modifier = Modifier.size(width = mediumSize, height = 0.dp))
     }
 
-    Spacer(modifier = Modifier.size(width = 0.dp, height = 24.dp))
+    Spacer(modifier = Modifier.size(width = 0.dp, height = mediumSize))
 
     Row(verticalAlignment = Alignment.CenterVertically) {
-        Spacer(modifier = Modifier.size(width = 16.dp, height = 0.dp))
+        Spacer(modifier = Modifier.size(width = mediumSize, height = 0.dp))
         CardTemperatureFeatureView(
             modifier = Modifier.weight(1f),
             title = "FEELS LIKE",
@@ -419,7 +468,7 @@ fun DayTemperatureDetails(temperatureState: ForecastTemperatureModel, forecastDa
             url = "https://bmcdn.nl/assets/weather-icons/v3.0/fill/svg/thermometer-colder.svg",
             isDay = isDay
         )
-        Spacer(modifier = Modifier.size(width = 16.dp, height = 0.dp))
+        Spacer(modifier = Modifier.size(width = mediumSize, height = 0.dp))
         CardTemperatureFeatureView(
             modifier = Modifier.weight(1f),
             title = "HUMIDITY",
@@ -429,13 +478,13 @@ fun DayTemperatureDetails(temperatureState: ForecastTemperatureModel, forecastDa
             url = "https://bmcdn.nl/assets/weather-icons/v3.0/fill/svg/humidity.svg",
             isDay = isDay
         )
-        Spacer(modifier = Modifier.size(width = 16.dp, height = 0.dp))
+        Spacer(modifier = Modifier.size(width = mediumSize, height = 0.dp))
     }
 
-    Spacer(modifier = Modifier.size(width = 0.dp, height = 24.dp))
+    Spacer(modifier = Modifier.size(width = 0.dp, height = mediumSize))
 
     Row(verticalAlignment = Alignment.CenterVertically) {
-        Spacer(modifier = Modifier.size(width = 16.dp, height = 0.dp))
+        Spacer(modifier = Modifier.size(width = mediumSize, height = 0.dp))
         CardTemperatureFeatureView(
             modifier = Modifier.weight(1f),
             title = "VISIBILITY",
@@ -445,7 +494,7 @@ fun DayTemperatureDetails(temperatureState: ForecastTemperatureModel, forecastDa
             url = "https://bmcdn.nl/assets/weather-icons/v3.0/fill/svg/code-green.svg",
             isDay = isDay
         )
-        Spacer(modifier = Modifier.size(width = 16.dp, height = 0.dp))
+        Spacer(modifier = Modifier.size(width = mediumSize, height = 0.dp))
         CardTemperatureFeatureView(
             modifier = Modifier.weight(1f),
             title = "WIND",
@@ -455,7 +504,7 @@ fun DayTemperatureDetails(temperatureState: ForecastTemperatureModel, forecastDa
             url = "https://bmcdn.nl/assets/weather-icons/v3.0/fill/svg/wind.svg",
             isDay = isDay
         )
-        Spacer(modifier = Modifier.size(width = 16.dp, height = 0.dp))
+        Spacer(modifier = Modifier.size(width = mediumSize, height = 0.dp))
     }
 }
 
