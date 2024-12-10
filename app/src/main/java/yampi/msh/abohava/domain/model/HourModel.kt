@@ -36,7 +36,7 @@ data class HourModel(
     @SerializedName("vis_miles") var visMiles: Int? = null,
     @SerializedName("gust_mph") var gustMph: Double? = null,
     @SerializedName("gust_kph") var gustKph: Double? = null,
-    @SerializedName("uv") var uv: Int? = null,
+    @SerializedName("uv") var uv: Double? = null,
     @SerializedName("short_rad") var shortRad: Double? = null,
     @SerializedName("diff_rad") var diffRad: Double? = null
 )

@@ -56,7 +56,6 @@ import yampi.msh.abohava.ui.home.DayCollapsibleToolbarViewLayout
 import yampi.msh.abohava.ui.home.TemperatureViewState
 import yampi.msh.abohava.ui.home.viewmodel.HomeViewModel
 import yampi.msh.abohava.util.isOnline
-import java.time.LocalDate
 
 
 @AndroidEntryPoint
@@ -100,7 +99,7 @@ class MainActivity : AppCompatActivity() {
                 .setAction("Action", null).show()
         }
 
-        var temperatureState = mutableStateOf(ForecastTemperatureModel())
+        val temperatureState = mutableStateOf(ForecastTemperatureModel())
 
         setContent {
             val homeTab = TabBarItem(
@@ -165,24 +164,7 @@ class MainActivity : AppCompatActivity() {
                 homeViewModel.uiState.collect { uiState ->
                     when (uiState) {
                         is TemperatureViewState.Success -> {
-                            uiState.forecastTemperatureModel.forecastModel?.forecastday?.let {
-                                if (it.isNotEmpty()) {
-                                    Log.d(
-                                        "HomeFragment",
-                                        "Forecast Temperature Model: ${it.first()}"
-                                    )
-                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                                        for (day in it) {
-                                            val d = LocalDate.parse(day.date)
-                                            Log.d("HomeFragment", "Day: ${d.dayOfWeek.name}")
-                                        }
-                                    }
-                                }
-                            }
-                            Log.d(
-                                "HomeFragment>>>Forecast",
-                                "Forecast for seven days: >>>\n${uiState.forecastTemperatureModel}"
-                            )
+//                            uiState.forecastTemperatureModel.forecastModel?.forecastday?.let {}
                             temperatureState.value = uiState.forecastTemperatureModel
                         }
 

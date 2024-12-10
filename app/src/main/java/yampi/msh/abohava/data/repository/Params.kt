@@ -2,7 +2,7 @@ package yampi.msh.abohava.data.repository
 
 import yampi.msh.abohava.domain.model.ForecastParam
 
-const val CITY_DEFAULT = "Gorgan"
+const val CITY_DEFAULT = "Vilnius"
 internal fun getForecastLocationParams(forecastParam: ForecastParam): String {
     return if (forecastParam.location.lat != null && forecastParam.location.lon != null) {
         "${forecastParam.location.lat},${forecastParam.location.lon}"

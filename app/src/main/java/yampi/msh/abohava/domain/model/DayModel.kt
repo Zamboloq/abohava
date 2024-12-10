@@ -22,6 +22,6 @@ class DayModel(
     @SerializedName("daily_will_it_snow") var dailyWillItSnow: Int? = null,
     @SerializedName("daily_chance_of_snow") var dailyChanceOfSnow: Int? = null,
     @SerializedName("condition") var condition: ConditionModel? = ConditionModel(),
-    @SerializedName("uv") var uv: Int? = null
+    @SerializedName("uv") var uv: Double? = null
 
 )

@@ -13,6 +13,7 @@ import yampi.msh.abohava.domain.model.ForecastDayModel
 import yampi.msh.abohava.domain.model.ForecastTemperatureModel
 import yampi.msh.abohava.ui.CollapsingToolbarParallaxEffect
 import yampi.msh.abohava.util.CollapsingToolbarTheme
+import yampi.msh.abohava.util.intToBoolean
 import yampi.msh.abohava.util.surface
 
 @Composable
@@ -26,8 +27,6 @@ fun DayCollapsibleToolbarViewLayout(state: MutableState<ForecastTemperatureModel
         forecastDay
     }
 
-    val isDay = temperatureState.currentModel?.isDay == 1
-
     CollapsingToolbarTheme {
         Surface {
             CollapsingToolbarParallaxEffect(
@@ -36,7 +35,7 @@ fun DayCollapsibleToolbarViewLayout(state: MutableState<ForecastTemperatureModel
                     .fillMaxSize()
                     .background(color = surface),
                 forecastDay = forecastDay,
-                isDay = isDay
+                isDay = temperatureState.currentModel?.isDay?.intToBoolean()
             )
         }
     }

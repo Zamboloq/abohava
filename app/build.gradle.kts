@@ -40,10 +40,16 @@ android {
         kotlinCompilerExtensionVersion = "1.5.4"
     }
     buildToolsVersion = "34.0.0"
+
+    testOptions.unitTests {
+        isIncludeAndroidResources = true
+        isReturnDefaultValues = true
+    }
 }
 
 dependencies {
 
+    implementation("com.google.ar:core:1.42.0")
     val roomVersion = "2.6.1"
     val composeBom = platform("androidx.compose:compose-bom:2024.01.00")
     implementation(composeBom)
@@ -86,7 +92,13 @@ dependencies {
     implementation("io.coil-kt:coil-compose:2.5.0")
     implementation("io.coil-kt:coil-svg:2.2.2")
 
+    implementation("androidx.test.ext:junit-ktx:1.1.5")
     testImplementation("junit:junit:4.13.2")
+    testImplementation("org.robolectric:robolectric:4.12")
+    testImplementation("io.mockk:mockk:1.9.3")
+    testImplementation("org.mockito:mockito-core:2.28.2")
+    testImplementation("io.github.ivanshafran:shared-preferences-mock:1.2.4")
+    androidTestImplementation("org.mockito:mockito-core:2.28.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
 }

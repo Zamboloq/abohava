@@ -63,7 +63,9 @@ import yampi.msh.abohava.util.xSmallSize
 import yampi.msh.abohava.util.xxMediumSize
 import java.time.LocalDate
 import java.time.format.TextStyle
+import kotlin.math.roundToInt
 
+@Deprecated(message = "This class is no more used. Use 'ContentDependencyLayout' instead of this class")
 @Composable
 fun dayViewLayout(state: MutableState<ForecastTemperatureModel>) {
     var temperatureState: ForecastTemperatureModel by remember { state }
@@ -154,7 +156,7 @@ fun dayViewLayout(state: MutableState<ForecastTemperatureModel>) {
 fun ForecastDaysView(
     title: String,
     forecasts: ArrayList<ForecastDayModel>?,
-    isDay: Boolean,
+    isDay: Boolean?,
     iconUrl: String = ""
 ) {
     OutlinedCard(
@@ -219,7 +221,7 @@ fun ForecastDaysView(
                                 ) {
                                     Text(
                                         text = "$dayName",
-                                        fontSize = mediumFontSize,
+                                        fontSize = xSmallFontSize,
                                         fontWeight = FontWeight.Bold,
                                         modifier = Modifier.width(xxMediumSize)
                                     )
@@ -261,7 +263,7 @@ fun ForecastDaysView(
                                             )
                                         }
                                         Text(
-                                            text = "${day?.maxtempC}",
+                                            text = "${day?.maxtempC?.roundToInt()}",
                                             fontSize = mediumFontSize,
                                             fontWeight = FontWeight.Bold,
                                             modifier = Modifier.width(largeSize)
@@ -279,7 +281,7 @@ fun ForecastDaysView(
                                             )
                                         }
                                         Text(
-                                            text = "${day?.mintempC}",
+                                            text = "${day?.mintempC?.roundToInt()}",
                                             fontSize = mediumFontSize,
                                             fontWeight = FontWeight.Bold,
                                             modifier = Modifier.width(largeSize)
@@ -429,14 +431,14 @@ fun MainTemperatureView(
 fun DayTemperatureDetails(
     temperatureState: ForecastTemperatureModel,
     forecastDay: ForecastDayModel?,
-    isDay: Boolean
+    isDay: Boolean?
 ) {
     Row(verticalAlignment = Alignment.CenterVertically) {
         Spacer(modifier = Modifier.size(width = mediumSize, height = 0.dp))
         CardTemperatureFeatureView(
             modifier = Modifier.weight(1f),
             title = "UV INDEX",
-            value = temperatureState.currentModel?.uv.toString(),
+            value = temperatureState.currentModel?.uv?.roundToInt().toString(),
             symbol = "",
             message = "Low levels all day.",
             url = "https://bmcdn.nl/assets/weather-icons/v3.0/fill/svg/uv-index.svg",
@@ -462,7 +464,7 @@ fun DayTemperatureDetails(
         CardTemperatureFeatureView(
             modifier = Modifier.weight(1f),
             title = "FEELS LIKE",
-            value = temperatureState.currentModel?.feelslikeC.toString(),
+            value = temperatureState.currentModel?.feelslikeC?.roundToInt().toString(),
             symbol = "C",
             message = "Wind is making it feel colder.",
             url = "https://bmcdn.nl/assets/weather-icons/v3.0/fill/svg/thermometer-colder.svg",
@@ -511,6 +513,6 @@ fun DayTemperatureDetails(
 @Preview
 @Composable
 fun dayViewLayoutPreview() {
-    var temperatureState = mutableStateOf(ForecastTemperatureModel())
-    dayViewLayout(temperatureState)
+//    var temperatureState = mutableStateOf(ForecastTemperatureModel())
+//    dayViewLayout(temperatureState)
 }

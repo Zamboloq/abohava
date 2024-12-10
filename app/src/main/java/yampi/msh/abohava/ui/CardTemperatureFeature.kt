@@ -32,13 +32,14 @@ import yampi.msh.abohava.util.mediumSize
 import yampi.msh.abohava.util.setBackgroundCardColor
 import yampi.msh.abohava.util.xxMediumFontSize
 import yampi.msh.abohava.util.xxxLargeSize
+import kotlin.math.roundToInt
 
 @Composable
 fun ForecastDayListView(
     modifier: Modifier,
     title: String,
     hours: ArrayList<HourModel>?,
-    isDay: Boolean = true,
+    isDay: Boolean?,
     iconUrl: String
 ) {
     OutlinedCard(
@@ -91,7 +92,7 @@ fun ForecastDayListView(
                                     contentDescription = "Translated description of what the image contains"
                                 )
                             }
-                            Text(text = hour.tempC.toString())
+                            Text(text = hour.tempC?.roundToInt().toString())
 //                            Text(text = hour.condition?.text.orEmpty())
                         }
                     }
@@ -110,7 +111,7 @@ fun CardTemperatureFeatureView(
     symbol: String,
     message: String,
     url: String,
-    isDay: Boolean = true
+    isDay: Boolean?
 ) {
     OutlinedCard(
         modifier = modifier,
